@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.digitanomad.gridtest.service.UserExcelService;
 import com.digitanomad.gridtest.service.UserService;
-import com.digitanomad.gridtest.service.UserServiceExcelUploader;
 
 /**
  * Handles requests for the application home page.
@@ -26,7 +26,7 @@ public class UserController {
 	UserService userService;
 	
 	@Autowired
-	UserServiceExcelUploader userServiceExcelUploader;
+	UserExcelService userExcelService;
 	
 	@RequestMapping("/")
 	public String home(Model model) {
@@ -50,11 +50,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/uploadExcel", method = RequestMethod.POST)
-	public ModelAndView uploadExcel(MultipartHttpServletRequest request) {
+	public String uploadExcel(MultipartHttpServletRequest request) {
 		MultipartFile file = request.getFile("excelUploadFile");
 		
-		userServiceExcelUploader.uploadExcelFile(file);
+		userExcelService.uploadUserExcel(file);
 		
-		return new ModelAndView("jqgrid");
+		return "jqgrid";
 	}
 }

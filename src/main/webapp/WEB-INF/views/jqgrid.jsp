@@ -26,51 +26,35 @@
 	
 	
 	<script type="text/javascript">
-	var jqGrid;
 	$(document).ready(function() {
 		drawJqGrid();
 	});
 	
 	function drawJqGrid() {
-		jqGrid = $('#jqGrid').jqGrid({
-			url : 'getJson',
-			datatype : 'json',
-			mtype : 'post',
+		$("#jqGrid").jqGrid({
+			url : "getJson",
+			datatype : "json",
+			mtype : "post",
 			jsonReader : {
-				root : 'data',
+				root : "data",
 				repeatitems : false
 			},
 			colModel : [
-				{
-					label : 'ID',
-					name : 'id'
-				}, 
-				{
-					label : '이름',
-					name : 'name'
-				},
-				{
-					label : '회사',
-					name : 'company'
-				},
-				{
-					label : '시작일',
-					name : 'startdate'
-				},
-				{
-					label : '카드번호',
-					name : 'cardnum'
-				}],
-				
+				{ label : "ID", name : "id" }, 
+				{ label : "이름", name : "name" },
+				{ label : "회사", name : "company" },
+				{ label : "시작일", name : "startdate" },
+				{ label : "카드번호", name : "cardnum" }
+			],
 			rowNum : 20,
 			loadonce : true,
-			pager : '#pager'
+			height : "460px",
+			pager : "#pager"
 		});	
 	}
 	
 	function checkFileType(filePath) {
-		var fileFormat = filePath.split(".");
-		if (fileFormat.indexOf("xls") > -1) {
+		if (filePath.match(/\.(xls)$/i)) {
 			return true;
 		} else {
 			return false;

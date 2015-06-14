@@ -1,5 +1,6 @@
-package com.digitanomad.gridtest.service;
+package com.digitanomad.gridtest.view;
 
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 import com.digitanomad.gridtest.dto.UserDto;
 
-public class UserServiceExcelBuilder extends AbstractExcelView {
+public class UserServiceExcelView extends AbstractExcelView {
 
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model,
@@ -67,9 +68,22 @@ public class UserServiceExcelBuilder extends AbstractExcelView {
 			row.createCell(4).setCellValue(userDto.getCardnum());
 		}
 		
-		String excelFileName = "customer_list.xls";
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + excelFileName + "\"");
+		// 다운로드 파일로 내보내기(한글)
+		String excelFileName = "고객목록";
+		String excelFileExtension = ".xls";
 		
+		String userAgent = request.getHeader("User-Agent");
+		// ie는 별도로 처리(ie11은 UserAgent가 Trident로 변경됨)
+		boolean ie = userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1;
+		
+		if (ie) {
+			excelFileName = URLEncoder.encode(excelFileName, "UTF-8");
+		} else {
+			excelFileName = new String(excelFileName.getBytes("UTF-8"), "8859_1");
+		}
+
+		response.setHeader("Content-Type", "application/octet-stream; charset=UTF-8");
+		response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName + excelFileExtension);
 	}
 
 }

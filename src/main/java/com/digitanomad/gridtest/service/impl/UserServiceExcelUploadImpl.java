@@ -1,4 +1,4 @@
-package com.digitanomad.gridtest.service;
+package com.digitanomad.gridtest.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,17 +9,21 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.digitanomad.gridtest.dao.UserDao;
 import com.digitanomad.gridtest.dto.UserDto;
+import com.digitanomad.gridtest.service.UserExcelService;
 
-@Component("UserServiceExcelUploader")
-public class UserServiceExcelUploader {
+@Service("UserServiceExcelUploadImpl")
+public class UserServiceExcelUploadImpl implements UserExcelService {
 	
-	@Autowired UserService userService;
+	@Autowired
+	UserDao userDao;
 
-	public boolean uploadExcelFile(MultipartFile file) {
+	@Override
+	public boolean uploadUserExcel(MultipartFile file) {
 		if (file == null || file.getSize() <= 0) {
 			return false;
 		}
@@ -50,7 +54,7 @@ public class UserServiceExcelUploader {
 			e.printStackTrace();
 		}
 		
-		userService.registerUserList(userList);
+		userDao.insertUserList(userList);
 		
 		return true;
 	}

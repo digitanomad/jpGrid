@@ -9,7 +9,7 @@ import com.digitanomad.gridtest.dao.UserDao;
 import com.digitanomad.gridtest.dto.UserDto;
 import com.digitanomad.gridtest.service.UserService;
 
-@Service
+@Service("UserServiceImpl")
 public class UserServiceImpl implements UserService {
 
 	@Autowired
